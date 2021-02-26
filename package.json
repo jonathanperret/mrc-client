@@ -1,0 +1,25 @@
+{
+  "name": "mrc-client",
+  "version": "0.0.1",
+  "description": "An Oculus Mixed Reality Capture client",
+  "main": "index.js",
+  "bin": {
+    "mrc-client": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathanperret/mrc-client.git"
+  },
+  "keywords": [
+    "VR"
+  ],
+  "author": "Jonathan Perret <j-github@jonathanperret.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonathanperret/mrc-client/issues"
+  },
+  "homepage": "https://github.com/jonathanperret/mrc-client#readme"
+}
