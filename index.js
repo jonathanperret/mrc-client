@@ -21,8 +21,9 @@ const FrameOffsets = {
 function startStreaming(done) {
     let ffplay;
     let shouldExit = false;
+    let shouldStart = false;
 
-    function startFFPlay() {
+    function startFFPlay(width, height) {
         ffplay = spawn('ffplay', [
             '-i', 'pipe:0',
             '-nostats',
@@ -30,7 +31,7 @@ function startStreaming(done) {
             '-probesize', '32',
             '-framerate', '100',
             '-flags', 'low_delay',
-            '-vf', 'crop=in_w/2:in_h:0:0,vflip'
+            '-vf', 'crop=in_w/2:in_h:0:0,vflip,scale=' + width + ':' + height + ''
         ], {
             stdio: ['pipe', 'inherit', 'inherit']
         });
@@ -55,8 +56,13 @@ function startStreaming(done) {
             const type = buf.readUInt32LE(FrameOffsets.PAYLOAD_TYPE);
             const payload = buf.slice(FrameOffsets.PAYLOAD_START, packetSize);
             // console.log(type, payloadLength, payload);
-            if (type == PayloadType.VIDEO_DATA) {
+            if (type == PayloadType.VIDEO_DATA && shouldStart) {
                 ffplay.stdin.write(payload);
+            } else if (type == PayloadType.VIDEO_DIMENSION && !shouldStart) {
+                const width = payload.readInt32LE(0);
+                const height = payload.readInt32LE(4);
+                startFFPlay(width/2.0, height);
+                shouldStart = true;
             }
             buf = buf.slice(packetSize);
         }
@@ -80,7 +86,6 @@ function startStreaming(done) {
     socket.connect(PORT, serverAddress, () => {
         console.log('Connection established.');
         shouldExit = true;
-        startFFPlay();
     });
 }
 
