@@ -29,7 +29,7 @@ function startStreaming(done) {
             '-loglevel', 'error',
             '-probesize', '32',
             '-framerate', '100',
-            '-vf', 'crop=in_w/2:in_h:0:0,vflip'
+            '-vf', 'crop=in_w/2:in_h:0:0,vflip,scale=2*in_w:in_h'
         ], {
             stdio: ['pipe', 'inherit', 'inherit']
         });
