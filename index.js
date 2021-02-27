@@ -29,6 +29,7 @@ function startStreaming(done) {
             '-loglevel', 'error',
             '-probesize', '32',
             '-framerate', '100',
+            '-flags', 'low_delay',
             '-vf', 'crop=in_w/2:in_h:0:0,vflip'
         ], {
             stdio: ['pipe', 'inherit', 'inherit']
