@@ -31,7 +31,8 @@ function startStreaming(done) {
             '-probesize', '32',
             '-framerate', '100',
             '-flags', 'low_delay',
-            '-vf', 'crop=in_w/2:in_h:0:0,vflip,scale=' + width + ':' + height + ''
+            // '-vf', 'crop=in_w/2:in_h:0:0,vflip,scale=' + width + ':' + height + ''
+            '-vf', 'vflip,scale=' + width + ':' + height + ''
         ], {
             stdio: ['pipe', 'inherit', 'inherit']
         });
@@ -61,7 +62,8 @@ function startStreaming(done) {
             } else if (type == PayloadType.VIDEO_DIMENSION && !shouldStart) {
                 const width = payload.readInt32LE(0);
                 const height = payload.readInt32LE(4);
-                startFFPlay(width/2.0, height);
+                // startFFPlay(width/2.0, height);
+                startFFPlay(width, height);
                 shouldStart = true;
             }
             buf = buf.slice(packetSize);
